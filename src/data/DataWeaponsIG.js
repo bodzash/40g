@@ -1,18 +1,7 @@
 export default [
-    //BASIC MELEE
-    {
-        name: "Basic Melee",
-        R: "Melee",
-        T: "Melee",
-        A: "User",
-        S: "User",
-        AP: 0,
-        D: 1,
-    },
-
     //RANGED
     {
-        name: "Laspistol",
+        name: "Laserpistol",
         R: 6,
         T: "Pistol",
         A: 1,
@@ -20,9 +9,8 @@ export default [
         AP: 0,
         D: 1,
     },
-
     {
-        name: "Lasgun",
+        name: "Lasergun",
         R: 12,
         T: "Rapid Fire",
         A: 1,

@@ -1,37 +1,36 @@
 export default [
     {
-        name: "Boy",
-        M: 5,
-        WS: 3, //+
-        BS: 5, //+
+        name: "Orc Boi", //Orc Boi
+        M: 3,
+        WS: 3,
+        BS: 5,
         S: 4,
         T: 5,
         W: 1,
         A: 2,
-        Sv: 6, //+
+        Sv: 6,
         B: 1,
-        rangedSlot: "Slugga",
-        meleeSlot: "Choppa",
-        grenadeSlot: "Stikkbomb",
-        sprite: "orkBoy",
-        scale: 1,
+        forwardDeploy: false,
+        rangedSlot: "Slugger",
+        meleeSlot: "Chopper",
+        sprite: "https://cdn.glitch.global/3b1fa69d-23b5-422f-b768-50fa26fd2e33/orkBoyO.png?v=1648415019445",
+        //"orkBoyO",
     },
-
     {
-        name: "Nob",
-        M: 5,
-        WS: 3, //+
-        BS: 5, //+
+        name: "Orc Noble", //Orc Noble
+        M: 3,
+        WS: 3,
+        BS: 5,
         S: 5,
         T: 5,
         W: 2,
         A: 3,
-        Sv: 6, //+
+        Sv: 6,
         B: 1,
-        rangedSlot: "Slugga",
-        meleeSlot: "Power Klaw",
-        grenadeSlot: "Stikkbomb",
-        sprite: "orkNob",
-        scale: 1,
+        forwardDeploy: false,
+        rangedSlot: "Slugger",
+        meleeSlot: "Power Claw",
+        sprite: "https://cdn.glitch.global/3b1fa69d-23b5-422f-b768-50fa26fd2e33/orkNobO.png?v=1648415030536",
+        //"orkNobO",
     },
 ]

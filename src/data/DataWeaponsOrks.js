@@ -1,19 +1,8 @@
 export default [
-    //BASIC MELEE
-    {
-        name: "Basic Melee",
-        R: "Melee",
-        T: "Melee",
-        A: "User",
-        S: "User",
-        AP: 0,
-        D: 1,
-    },
-    
     //RANGED
     {
-        name: "Slugga",
-        R: 12,
+        name: "Slugger",
+        R: 6,
         T: "Pistol",
         A: 1,
         S: 4,
@@ -23,7 +12,7 @@ export default [
 
     //MELEE
     {
-        name: "Choppa",
+        name: "Chopper",
         R: "Melee",
         T: "Melee",
         A: "User",
@@ -31,13 +20,12 @@ export default [
         AP: -1,
         D: 1,
     },
-
     {
-        name: "Power Klaw",
+        name: "Power Claw",
         R: "Melee",
         T: "Melee",
         A: "User",
-        S: "UserX2",
+        S: "UserX2",//X2
         AP: -3,
         D: 2,
     },
