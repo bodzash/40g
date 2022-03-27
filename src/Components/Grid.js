@@ -1,34 +1,49 @@
 import React from "react"
 
-export default function Grid({x, y, deck, setDeck, board, selected, setSelected, turn, phase}) {
+export default function Grid({x, y, deck, setDeck, selected, setSelected, turn, phase, subPhase, setSubPhase, type, setTargetedUnit, setThrows}) {
 
-    let overlap = deck.some(item=> item.x === x && item.y ===y )
+    //type: action, hollow, rapid
+    //action: move,shoot,move for charge, melee
 
-    let STYLE = {
-        top: 60*y,
-        left: 60*x,
-        display: (x < 0 || x > board.x || y < 0 || y > board.y || overlap) ? "none" : "flex"
-    }
+    let STYLE = { top: 60 * y +2, left: 60 * x +2 }
 
+    //This will run when this gets clicked on
     function applyGrid() {
-        if (turn)
+        let arr
+        if (type==="action")
             switch(phase) {
-                case "move":
-                    let arr = [...deck]
+                case "charge":
+                case "movement":
+                    arr = [...deck]
                     arr[selected] = {...arr[selected], x: x, y: y, hasMoved: true} //avoid mutation
                     setDeck(arr)
                     setSelected(undefined) //end
                 break
-                case "shoot":
-                    //loop trough deck, check for same xy, check for enemy, ...
-                    //set shooter's hasShot = true, start combat (display combat window)
+                case "shooting":
+                case "fight":
+                    deck.forEach((item,ind) => {
+                        if (item.x === x && item.y === y) {
+                            setSubPhase("hit")
+                            setThrows([])
+                            setTargetedUnit(ind)
+                            //setSelected(undefined)
+                        }
+                    })
                 break
+                /*case "charge":
+                    //loop trough enemies, check for same xy but in 1 radius
+                    //set fight's hasFight = true, start combat
+                    //when combat is resolved setSelected undef
+                break*/
             }
     }
 
     return (
-        <button onClick={()=> {applyGrid()}} className="grid" style={STYLE}>
-            
-        </button>
+        <div className="grid" style={STYLE}>
+            <div onClick={()=> {applyGrid()}} className="mask" style={{cursor: type==="action" ? "pointer" : "default" }} ></div>
+            <div className={type==="action" ? "grid-action" : "grid-hollow"}></div>
+        </div>
     )
 }
+
+//{type==="action" ? "grid grid-action" : "grid grid-hollow" }
