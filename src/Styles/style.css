@@ -3,6 +3,12 @@
     padding: 0;
     box-sizing: border-box;
     color: #fafafa;
+
+    -webkit-user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
 }
 
 #root {
@@ -13,6 +19,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+body {
+    overflow-x: hidden;
 }
 
 .app {
@@ -31,17 +41,32 @@
 }
 
 .list-wrapper button {
-    color: black;
-    margin: 1rem .5rem;
-    padding: 2rem;
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+    background-color: rgb(65, 71, 61);
+    border-radius: 6px;
+    padding: .9rem 2rem;
+    margin: 2rem 1rem;
+}
+
+.list-wrapper button:hover {
+    background-color: rgb(51, 53, 49);
+}
+
+.list-wrapper button:active {
+    transform: scale(.9);
+    background-color: rgb(101, 102, 99);
 }
 
 /* GAME */
 .game {
     position: relative;
-    display: grid;
-    grid-template-columns: repeat(15, 60px);
-    grid-template-rows: repeat(11, 60px);
+    display: flex;
+    flex-direction: row;
+    justify-self: center;
+    align-items: center;
     width: 100%;
     height: 100%;
 
@@ -54,58 +79,93 @@
     linear-gradient(to bottom, grey 2px, transparent 2px);
 }
 
+/*UNIT*/
 .unit {
     position: absolute;
-    width: 62px;
-    height: 62px;
-    border: 2px solid white;
+    width: 58px;
+    height: 58px;
 
-    background-color: transparent;
     transition: background-color .16s;
-    background-color: rgba(0, 128, 0, 0.6);
-}
-.unit:hover {
-    background-color: green;
+    transition: border-color .16s;
 }
 
 .unit > img {
     position: absolute;
-    z-index: 2;
-    width: 65px;
+    z-index: 3;
     top: 50%; right: 50%;
-
+    transform: translate(50%, -70%);
     pointer-events: none;
-    -webkit-user-drag: none;
-    user-select: none;
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    -ms-user-select: none;
+    image-rendering: crisp-edges;
 }
 
+/* ENEMY UNITS */
+.enemy-active {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 0, 0, 0.3);
+    transition: background-color .16s;
+} .enemy-active:hover {
+    background-color: rgb(145, 9, 9);
+}
+
+.enemy-inactive {
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    position: absolute;
+    border: 3px solid rgb(128, 19, 19);
+    cursor: not-allowed;
+} .enemy-inactive:hover {
+    border-color: rgb(216, 2, 2);
+}
+
+.enemy-selected {
+    width: 100%;
+    height: 100%;
+    background-color: rgb(255, 20, 20);
+    transition: background-color .16s;
+}
+
+/*FRIENDLY UNIT*/
+.friend-active {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 66, 128, 0.4);
+    cursor: pointer;
+    transition: background-color .16s;
+} .friend-active:hover {
+    background-color: rgb(0, 66, 128);
+}
+
+.friend-inactive {
+    width: 100%;
+    height: 100%;
+    border: 3px solid rgb(0, 87, 128);
+    cursor: not-allowed;
+} .friend-inactive:hover {
+    border-color: rgb(15, 119, 255);
+}
+
+.friend-selected {
+    width: 100%;
+    height: 100%;
+    background-color: rgb(0, 132, 255);
+    transition: background-color .16s;
+}
+
+/* Tables */
 .unit > .hover-table {
-    display: none;
     text-align: left;
     pointer-events: none;
     position: absolute;
     top: -2px;
-    left: 60px;
     opacity: 0;
-    z-index: 3;
-    transition: opacity .3s ease-in;
-    width: 600px;
+    z-index: 12;
+    width: max-content;
 }
-
 .unit:hover .hover-table {
-    display: block;
     opacity: 1;
 }
-
-.hover-table:hover {
-    display: block;
-    opacity: 1;
-}
-
-
 
 table {
     border-collapse: collapse;
@@ -114,55 +174,212 @@ table {
 
 th, td {
     padding: 4px 8px;
+    white-space: nowrap;
 }
 
 tr td:first-child, th:first-child {
-    width: 8rem;
+    width: 100px;
 }
 
 th {background-color: rgb(87, 87, 87);}
 
-/*td:nth-child(even), td:nth-child(even) {background-color: #1a1a1a;}*/
 
-
-
-
+/* Grid styles */
 .grid {
     position: absolute;
-    width: 62px;
-    height: 62px;
-    border: 2px solid white;
+    width: 58px;
+    height: 58px;
+    background: transparent;
+}
 
-    cursor: pointer;
-    background-color: transparent;
+.mask {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 4;
+    cursor: default;
+} .mask:hover ~ .grid-action {
+    background-color: rgba(0, 190, 0, 0.9);
+  }
+  .mask:hover ~ .grid-hollow {
+    background-color: rgba(255, 255, 255, 0.3);
+   }
+
+
+.grid-action {
+    width: 100%;
+    height: 100%;
+    z-index: 1;
     transition: background-color .16s;
-    background-color: rgba(0, 128, 0, 0.3);
+    background-color: rgba(0, 190, 0, 0.7);
+}
+
+.grid-hollow {
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    transition: background-color .16s;
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 
 
+/*CNC window*/
 .cnc {
+    z-index: 10;
     position: absolute;
     bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
+    left: 0;
+    width: 100%;
+    height: 118px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
 }
 
 .cnc > button {
     color: white;
     font-weight: 700;
-    background-color: green;
-    outline: 0;
+    cursor: pointer;
     border: none;
+    border-radius: 6px;
     padding: .9rem 2rem;
-    margin-bottom: 2rem;
 }
-
 .cnc > button > span {
    text-transform: uppercase;
-   
 }
 
-.cnc > button:hover {
+.cmd-red {
+    background-color: rgb(233, 0, 0);
+} .cmd-red:hover {
+    background-color: rgb(133, 0, 0);
+}
+
+.cmd-blue {
+    background-color: rgb(0, 84, 133);
+} .cmd-blue:hover {
+    background-color: rgb(1, 44, 80);
+}
+
+/* Combat window */
+
+.battle-bck {
+    z-index: 9;
+    position: absolute;
+    content: "";
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(51, 51, 51, 0.6);
+}
+
+.battle {
+    z-index: 10;
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    width: calc(60% + 3px);
+    height: calc(50% + 4px);
+    background-color: rgb(39, 39, 39);
+    border-radius: 12px;
+    margin: 0 auto;
+    margin-bottom: 120px;
+}
+
+.roll-title {
+    margin-top: 1.5rem;
+}
+.roll-title > span {
+    text-transform: capitalize;
+}
+
+
+.roll-dice-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    height: 5rem;
+    gap: 1rem;
+}
+
+.roll-dice {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    width: 3rem;
+    height: 3rem;
+    background-color: white;
+    color: black;
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+.roll-btn {
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    cursor: pointer;
+    color: white;
+    font-weight: 700;
+    background-color: green;
+    border: none;
+    padding: .6rem 1.4rem;
+} .roll-btn:hover {
     background-color: rgb(1, 80, 1);
+}
+
+/*  */
+.roll-wrapper {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    bottom: 2px;
+    /*background-color: red;*/
+}
+
+.left {
+    left: 0;
+}
+
+.right {
+    right: 0;
+    transform: scaleX(-1);
+}
+
+.flag {
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    height:110px;
+    width:0px;
+    border-left:40px solid #bebec5af;
+    border-right:40px solid #bebec5af;
+    border-bottom:30px solid transparent;
+    margin-bottom: 1.2rem;
+}
+
+.flag-blue {
+    border-left:40px solid #120fd8af;
+    border-right:40px solid #120fd8af;
+    border-bottom:30px solid transparent;
+}
+.flag-red {
+    border-left:40px solid #d80f0faf;
+    border-right:40px solid #d80f0faf;
+    border-bottom:30px solid transparent;
+}
+
+.roll-img {
+    position: relative;
+    z-index: 11;
+    image-rendering: crisp-edges;
 }
